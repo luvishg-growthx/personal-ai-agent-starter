@@ -1,28 +1,20 @@
 // agent.js — your agent's BRAIN. The one and only place that talks to the AI.
 //
-// Everything else (the website, and any capabilities you add later) goes
-// through this one function: ask(message). It reads your PERSONALITY.md so the
-// reply sounds like YOU, and it keeps the conversation's memory so replies make
-// sense in context.
+// Everything else (the website now, and any powers you add later) goes through
+// this one function: ask(message). It reads your PERSONALITY.md so the reply
+// sounds like YOU, and it keeps the conversation's memory so replies make sense
+// in context.
 //
 // No API key needed — it uses your logged-in Claude Code session.
 //
-// 👉 When a capability module's instructions mention "twin.js", they mean THIS
-//    file (agent.js). When they mention "CLAUDE.md" or "PERSONA.md", they mean
-//    your PERSONALITY.md.
+// 👉 When a capability you add later mentions "twin.js", it means THIS file
+//    (agent.js). When it mentions "CLAUDE.md" or "PERSONA.md", it means your
+//    PERSONALITY.md. New powers should wire INTO this file.
 
 const { spawn } = require("child_process");
 const { randomUUID } = require("crypto");
 const fs = require("fs");
 const path = require("path");
-
-// Long-term memory (optional capability). If memory.js is present and engram is
-// installed, the agent recalls relevant past memories and saves new ones. If
-// not, these calls quietly do nothing — the agent still works fine.
-let memory = null;
-try {
-  memory = require("./memory.js");
-} catch (_) {}
 
 // Read your voice file fresh every time, so edits to PERSONALITY.md show up
 // immediately without restarting.
@@ -58,25 +50,15 @@ function ask(message, threadId = "main") {
 
     // Wrap the message with your voice so every reply sounds like you.
     const voice = personality();
-
-    // Pull up any relevant long-term memories (no-op if memory isn't set up).
-    const recalled = memory && memory.recallContext ? memory.recallContext(message) : "";
-
-    const parts = [];
-    if (voice) {
-      parts.push(
-        `Reply to the message below in this exact voice/persona. Stay in character.\n\n${voice}`,
-      );
-    }
-    if (recalled) parts.push(recalled);
-    parts.push(`----- MESSAGE -----\n${message}`);
-    const prompt = parts.join("\n\n");
+    const prompt = voice
+      ? `Reply to the message below in this exact voice/persona. Stay in character.\n\n${voice}\n\n----- MESSAGE -----\n${message}`
+      : message;
 
     const args = [
       "-p",
       prompt,
       ...memoryFlag,
-      // Lets the agent use its tools freely (needed once you add capabilities),
+      // Lets the agent use its tools freely (needed once you add powers),
       // without stopping to ask for permission each time.
       "--permission-mode",
       "bypassPermissions",
@@ -95,12 +77,7 @@ function ask(message, threadId = "main") {
         resolve("(Hmm, I hit a snag. Is Claude Code installed and logged in?)");
         return;
       }
-      const reply = out.trim() || "(…I didn't have anything to say to that.)";
-      // Save this exchange to long-term memory (no-op if memory isn't set up).
-      if (memory && memory.remember) {
-        memory.remember(`You said: "${message.slice(0, 200)}". I replied: "${reply.slice(0, 200)}"`, 5);
-      }
-      resolve(reply);
+      resolve(out.trim() || "(…I didn't have anything to say to that.)");
     });
     child.on("error", (e) => {
       resolve("(I couldn't start the AI — make sure Claude Code is installed: " + e.message + ")");

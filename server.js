@@ -11,12 +11,6 @@ const fs = require("fs");
 const path = require("path");
 const { ask } = require("./agent.js");
 
-// Start the reminder scheduler in the same process, so scheduled messages fire
-// while your agent is running. Best-effort — ignored if scheduler.js is absent.
-try {
-  require("./scheduler.js").startScheduler(ask);
-} catch (_) {}
-
 const PORT = Number(process.env.PORT || 3000);
 const PUBLIC = path.join(__dirname, "public");
 
