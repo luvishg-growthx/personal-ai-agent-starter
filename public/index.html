@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- 👇 Your agent's name shows here. Change "Your Agent" to your agent's name. -->
+  <title>Your Agent</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="dot"></div>
+      <!-- 👇 Change this name too. -->
+      <div class="title">Your Agent</div>
+      <div class="status">online</div>
+    </header>
+
+    <main id="chat" class="chat">
+      <!-- messages appear here -->
+      <div class="msg agent">
+        <div class="bubble">Hey — I'm your agent. Say something to me 👋</div>
+      </div>
+    </main>
+
+    <form id="composer" class="composer">
+      <input
+        id="input"
+        class="input"
+        type="text"
+        placeholder="Type a message…"
+        autocomplete="off"
+        autofocus
+      />
+      <button class="send" type="submit">Send</button>
+    </form>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

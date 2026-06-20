@@ -1,0 +1,9 @@
+{
+  "name": "personal-ai-agent-starter",
+  "version": "1.0.0",
+  "description": "A personal AI agent you chat with in your browser — speaks in your voice, runs on your laptop, no API key.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
