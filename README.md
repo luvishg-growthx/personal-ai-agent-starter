@@ -48,6 +48,13 @@ modules and wire them into `agent.js`:
 - ⏰ **Scheduler** — reminders and timed messages
 - 💬 **Slack** (optional/advanced) — reach your agent from Slack too
 
+## Guides included
+
+This starter ships with two short guide files your AI reads during the build:
+- `ideation.md` — scope your agent's personality (writes `PERSONALITY.md`).
+- `build.md` — build the web agent, then add powers (memory, reminders, email,
+  Slack) by cloning ready-made modules.
+
 ## Files
 
 ```
@@ -55,4 +62,6 @@ PERSONALITY.md     your agent's voice
 agent.js           the brain (talks to the AI)
 server.js          runs the local website
 public/            the browser chat page
+ideation.md        guide: scope the personality
+build.md           guide: build + add powers
 ```
